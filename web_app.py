@@ -11,13 +11,11 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 agent = MCPLLMAgentAutonomousWeb("http://localhost:8001")
-sessions = {}  # Map session tokens to session_id
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     # Generate a session token for the browser
     token = str(uuid4())
-    sessions[token] = token
     return templates.TemplateResponse("index.html", {"request": request, "session_token": token})
 
 @app.post("/api/query")

@@ -13,20 +13,30 @@ send.onclick = async () => {
     appendMessage("user", query);
     input.value = "";
 
-    const response = await fetch("/api/query", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({query, session_token})
-    });
-    const data = await response.json();
+    try {
+        const response = await fetch("/api/query", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({query, session_token})
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
 
-    appendMessage("agent", data.message);
+        appendMessage("agent", data.message);
 
-    if (data.done && data.offers.length > 0) {
-        currentOffers = data.offers;
-        appendOffers(data.offers);
-    } else if (data.done && data.offers.length === 0) {
-        appendMessage("agent", "No offers found matching your criteria. Try adjusting your search.");
+        if (data.done && data.offers.length > 0) {
+            currentOffers = data.offers;
+            appendOffers(data.offers);
+        } else if (data.done && data.offers.length === 0) {
+            appendMessage("agent", "No offers found matching your criteria. Try adjusting your search.");
+        }
+    } catch (error) {
+        appendMessage("agent", `Error: ${error.message}. Please try again.`);
+        console.error("Error querying agent:", error);
     }
 };
 
