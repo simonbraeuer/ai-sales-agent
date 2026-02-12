@@ -87,6 +87,13 @@ export OPENAI_API_KEY="your-api-key-here"  # On Windows: set OPENAI_API_KEY=your
 ```
 *Note: The agent works without an API key using rule-based parsing.*
 
+5. **Select LLM behavior (local parameterization)**:
+```bash
+# Default is "auto" (uses LLM when OPENAI_API_KEY is set)
+export AI_SALES_AGENT_MODE="real"  # Force LLM logic (requires OPENAI_API_KEY)
+# export AI_SALES_AGENT_MODE="fake"  # Force rule-based parsing
+```
+
 ### Running the Backend Version
 
 **Start the Backend API** (Terminal 1):

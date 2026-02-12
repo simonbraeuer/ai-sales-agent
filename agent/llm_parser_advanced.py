@@ -2,6 +2,16 @@ import os
 import json
 import re
 
+def should_use_llm(api_key: str) -> bool:
+    mode = os.getenv("AI_SALES_AGENT_MODE", "auto").lower()
+    if mode == "fake":
+        return False
+    if mode == "real":
+        if not api_key:
+            raise RuntimeError("OPENAI_API_KEY is required when AI_SALES_AGENT_MODE=real")
+        return True
+    return bool(api_key)
+
 def parse_query_to_criteria_advanced(query: str) -> dict:
     """
     Parse user query into structured criteria for the offers API.
@@ -46,11 +56,12 @@ def parse_query_to_criteria_advanced(query: str) -> dict:
 def parse_query_to_criteria_with_llm(query: str) -> dict:
     """
     Parse user query using OpenAI LLM for better understanding.
-    Falls back to rule-based parsing if API key is not available.
+    Falls back to rule-based parsing if API key is not available,
+    unless AI_SALES_AGENT_MODE=real forces LLM usage.
     """
     api_key = os.getenv("OPENAI_API_KEY")
     
-    if not api_key:
+    if not should_use_llm(api_key):
         # Fallback to rule-based parsing
         return parse_query_to_criteria_advanced(query)
     
