@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Offer Agent Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            font-size: 28px;
+        }
+        #chat {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            max-width: 80%;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .user {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        .agent {
+            background: #e9ecef;
+            color: #333;
+            margin-right: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        th:hover {
+            background: linear-gradient(135deg, #7c8ef0 0%, #8659ad 100%);
+        }
+        th.sorted::after {
+            content: ' ▼';
+            position: absolute;
+            right: 10px;
+        }
+        th.sorted.asc::after {
+            content: ' ▲';
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .price {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        .discount {
+            color: #e74c3c;
+            font-weight: bold;
+            background: #ffe5e5;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .rating {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .rating::after {
+            content: ' ★';
+        }
+        .input-container {
+            display: flex;
+            padding: 20px;
+            background: white;
+            border-radius: 0 0 20px 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        #query {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        #query:focus {
+            border-color: #667eea;
+        }
+        #send {
+            margin-left: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        #send:active {
+            transform: translateY(0);
+        }
+        .sort-controls {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .sort-controls label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .sort-controls select {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .sort-controls select:focus {
+            border-color: #667eea;
+        }
+        #session_token {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Offer Agent Demo</h1>
+        <div id="chat"></div>
+        <div class="input-container">
+            <input type="text" id="query" placeholder="Ask me to find offers... e.g., 'Find fashion items under $50'" />
+            <button id="send">Send</button>
+        </div>
+    </div>
+    <input type="hidden" id="session_token" value="{{ session_token }}" />
+    <script src="/static/main.js"></script>
+</body>
+</html>
