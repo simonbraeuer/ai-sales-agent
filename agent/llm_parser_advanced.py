@@ -10,6 +10,13 @@ def should_use_llm() -> bool:
         - auto: use LLM when OPENAI_API_KEY is set (default)
         - real: require OPENAI_API_KEY and always use LLM
         - fake: always use rule-based logic
+
+    Returns:
+        bool: True when the LLM should be used, False for rule-based logic.
+
+    Raises:
+        ValueError: If AI_SALES_AGENT_MODE is not one of auto, fake, or real.
+        RuntimeError: If AI_SALES_AGENT_MODE is real without OPENAI_API_KEY set.
     """
     mode = os.getenv("AI_SALES_AGENT_MODE", "auto").lower()
     if mode not in {"auto", "fake", "real"}:
@@ -20,7 +27,7 @@ def should_use_llm() -> bool:
     if mode == "real":
         if not api_key:
             raise RuntimeError(
-                "OPENAI_API_KEY environment variable is required when AI_SALES_AGENT_MODE is set to \"real\""
+                "OPENAI_API_KEY environment variable is required when AI_SALES_AGENT_MODE='real'"
             )
         return True
     return bool(api_key)
