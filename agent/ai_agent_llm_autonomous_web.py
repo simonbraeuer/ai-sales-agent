@@ -25,8 +25,6 @@ class AIOfferAgentAutonomousWeb:
         - next_action: "DONE" or "ASK"
         - question: string (if ASK)
         """
-        api_key = os.getenv("OPENAI_API_KEY")
-        
         if not should_use_llm():
             # Without LLM, decide based on simple rules
             if len(offers) == 0:
@@ -38,7 +36,7 @@ class AIOfferAgentAutonomousWeb:
         
         try:
             import openai
-            openai.api_key = api_key
+            openai.api_key = os.getenv("OPENAI_API_KEY")
             
             prompt = f"""
 You are an AI shopping assistant.
@@ -72,8 +70,6 @@ Respond ONLY as JSON: {{"next_action": "DONE" or "ASK", "question": "..." if ASK
 
     def update_criteria_with_response(self, criteria: dict, user_response: str):
         """Update criteria based on user's answer (with or without LLM)."""
-        api_key = os.getenv("OPENAI_API_KEY")
-        
         if not should_use_llm():
             # Simple rule-based update
             user_lower = user_response.lower()
@@ -86,7 +82,7 @@ Respond ONLY as JSON: {{"next_action": "DONE" or "ASK", "question": "..." if ASK
         
         try:
             import openai
-            openai.api_key = api_key
+            openai.api_key = os.getenv("OPENAI_API_KEY")
             
             prompt = f"""
 Current search criteria: {criteria}

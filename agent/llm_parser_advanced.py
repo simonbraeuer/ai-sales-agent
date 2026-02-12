@@ -75,11 +75,10 @@ def parse_query_to_criteria_with_llm(query: str) -> dict:
     if not should_use_llm():
         # Fallback to rule-based parsing
         return parse_query_to_criteria_advanced(query)
-    api_key = os.getenv("OPENAI_API_KEY")
     
     try:
         import openai
-        openai.api_key = api_key
+        openai.api_key = os.getenv("OPENAI_API_KEY")
         
         prompt = f"""
 Parse the following user query into structured search criteria for an e-commerce offers API.
