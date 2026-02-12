@@ -1,15 +1,22 @@
 # AI Sales Agent - Interactive Web Demo
 
-An AI-powered chatbot sales agent with a fully interactive web interface. The agent uses autonomous reasoning to understand user queries, interact with a REST backend, ask follow-up questions, and return personalized offers with explanations.
+An AI-powered chatbot sales agent with a fully interactive web interface. The agent uses autonomous reasoning to understand user queries, filter offers, and return personalized recommendations with explanations.
+
+## 🌐 Live Demo
+
+**GitHub Pages:** [https://simonbraeuer.github.io/ai-sales-agent/](https://simonbraeuer.github.io/ai-sales-agent/)
+
+The app runs entirely in your browser - no backend required!
 
 ## Features
 
-✨ **Multi-Turn Conversations**: Agent can ask clarifying questions and refine search criteria iteratively  
-🤖 **Autonomous AI Agent**: Uses LLM (optional) or rule-based parsing to understand user intent  
+✨ **Client-Side Only**: Runs entirely in the browser, perfect for GitHub Pages  
+🤖 **Smart Query Parsing**: Understands natural language queries and extracts search criteria  
 🔍 **Dynamic Filtering**: Filter offers by category, price, discount, and rating  
 📊 **Interactive Table View**: Sort offers by any column with a single click  
 🎨 **Modern UI**: Beautiful gradient design with smooth animations  
 💬 **Real-Time Chat**: Type queries naturally and get instant responses  
+⚡ **No Installation**: Just open `index.html` in a browser  
 
 ## Project Structure
 
@@ -29,7 +36,33 @@ ai-sales-agent/
 └── requirements.txt                    # Python dependencies
 ```
 
-## Installation
+## 🚀 Quick Start (GitHub Pages Version)
+
+The easiest way to use this app is via **GitHub Pages** - just visit the live demo!
+
+Or run it locally:
+
+1. Download `index.html` from this repository
+2. Open it in any modern web browser
+3. Start asking for offers!
+
+No installation, no dependencies, no setup required!
+
+## Example Queries
+
+Try these sample queries in the chat interface:
+
+- `"Find fashion items under $50"`
+- `"Show electronics with discount above 20%"`
+- `"I want items with rating above 4.5"`
+- `"Looking for shoes"`
+- `"Show me the best deals"`
+
+## 📦 Python Backend Version (Advanced)
+
+For development or if you want to extend the agent with OpenAI integration, you can run the full Python backend version:
+
+### Installation
 
 1. **Clone the repository**:
 ```bash
@@ -54,49 +87,69 @@ export OPENAI_API_KEY="your-api-key-here"  # On Windows: set OPENAI_API_KEY=your
 ```
 *Note: The agent works without an API key using rule-based parsing.*
 
-## Usage
+### Running the Backend Version
 
-### Start the Backend API
-
-In one terminal, start the REST backend on port 8001:
-
+**Start the Backend API** (Terminal 1):
 ```bash
 uvicorn backend:app --reload --port 8001
 ```
 
-The API will be available at `http://localhost:8001/offers`
-
-### Start the Web Application
-
-In another terminal, start the web interface on port 8000:
-
+**Start the Web Application** (Terminal 2):
 ```bash
 uvicorn web_app:app --reload --port 8000
 ```
 
-### Open in Browser
+**Open in Browser**: Navigate to `http://localhost:8000`
 
-Navigate to `http://localhost:8000` and start chatting!
+## 🎯 Project Structure
 
-## Example Queries
+```
+ai-sales-agent/
+├── index.html                           # 🌐 Standalone GitHub Pages version
+├── backend.py                           # REST API with offers data
+├── agent/                               # AI agent modules
+│   ├── __init__.py
+│   ├── llm_parser_advanced.py          # Query parsing (LLM or rule-based)
+│   ├── ai_agent_llm_autonomous_web.py  # Core autonomous agent logic
+│   └── mcp_agent_llm_autonomous_web.py # MCP-compatible wrapper
+├── web_app.py                           # FastAPI web interface
+├── templates/
+│   └── index.html                       # Chat UI template
+├── static/
+│   └── main.js                          # Frontend JavaScript
+└── requirements.txt                     # Python dependencies
+```
 
-Try these sample queries:
+## 📖 How It Works
 
-- `"Find fashion items under $50"`
-- `"Show electronics with discount above 10%"`
-- `"I want items with rating above 4"`
-- `"Looking for smartphones on sale"`
-- `"Show me the best deals"`
+### GitHub Pages Version (Client-Side)
+1. **User Input**: User types a natural language query
+2. **Query Parsing**: JavaScript parses the query into structured criteria (category, price, discount, rating)
+3. **Filtering**: Client-side filtering of the embedded offers data
+4. **Display**: Results shown in a sortable, color-coded table
+5. **Sorting**: Click any column header or use dropdowns to sort
 
-## How It Works
-
+### Python Backend Version
 1. **User Input**: User types a natural language query in the chat interface
-2. **Query Parsing**: Agent parses the query into structured criteria (category, price, discount, rating)
+2. **Query Parsing**: Agent parses the query into structured criteria (LLM or rule-based)
 3. **Backend Query**: Agent calls the REST API with the parsed criteria
 4. **Decision Making**: Agent decides if results are satisfactory or if follow-up questions are needed
 5. **Response**: Agent returns offers in a sortable table or asks clarifying questions
 6. **Refinement**: User can answer follow-up questions to refine results
 7. **Dynamic Sorting**: User can sort offers by any column (price, discount, rating, title)
+
+## 🚢 Deploy to GitHub Pages
+
+To deploy your own version:
+
+1. **Fork this repository**
+2. **Go to Settings** → **Pages**
+3. **Select Source**: Deploy from branch `main` (or your preferred branch)
+4. **Select Folder**: `/` (root)
+5. **Save** and wait a few minutes
+6. Your site will be live at `https://<your-username>.github.io/ai-sales-agent/`
+
+The `index.html` file in the root is ready to be served by GitHub Pages!
 
 ## API Endpoints
 
@@ -121,29 +174,41 @@ The agent uses a **stateful, session-based architecture**:
 - Agent can refine criteria based on user feedback
 - MCP (Model Context Protocol) compatible design
 
-## Customization
+## 🎨 Customization
 
-### Adding More Offers
+### GitHub Pages Version
 
-Edit `backend.py` and add items to the `OFFERS` list:
+Edit the standalone `index.html` file:
 
-```python
-OFFERS = [
-    {"id": 5, "title": "New Product", "category": "electronics", 
-     "price": 500, "discount": 20, "rating": 4.8},
-    # Add more...
-]
+**Adding More Offers**: Modify the `ALL_OFFERS` array in the `<script>` section:
+```javascript
+const ALL_OFFERS = [
+    {id: 9, title: "New Product", category: "electronics", 
+     price: 500, discount: 20, rating: 4.8},
+    // Add more...
+];
 ```
 
-### Modifying UI Styles
+**Modifying UI Styles**: Edit the `<style>` section to customize colors, fonts, and layout.
 
-Edit `templates/index.html` to customize colors, fonts, and layout.
+**Extending Query Parsing**: Modify the `parseQuery()` function to recognize more keywords and patterns.
 
-### Extending Agent Logic
+### Python Backend Version
 
-Edit `agent/ai_agent_llm_autonomous_web.py` to add more decision-making logic or criteria.
+**Adding More Offers**: Edit `backend.py` and add items to the `OFFERS` list.
 
-## Technologies Used
+**Modifying UI Styles**: Edit `templates/index.html` to customize the interface.
+
+**Extending Agent Logic**: Edit `agent/ai_agent_llm_autonomous_web.py` to add more decision-making logic.
+
+## 💻 Technologies Used
+
+**GitHub Pages Version:**
+- Pure HTML, CSS, and JavaScript
+- No dependencies or build tools
+- Works offline after first load
+
+**Python Backend Version:**
 
 - **FastAPI**: Modern web framework for Python
 - **Jinja2**: Template engine for HTML
