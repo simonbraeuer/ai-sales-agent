@@ -27,7 +27,7 @@ class AIOfferAgentAutonomousWeb:
         """
         api_key = os.getenv("OPENAI_API_KEY")
         
-        if not should_use_llm(api_key):
+        if not should_use_llm():
             # Without LLM, decide based on simple rules
             if len(offers) == 0:
                 return {"next_action": "ASK", "question": "No offers found. Would you like to adjust your criteria?"}
@@ -74,7 +74,7 @@ Respond ONLY as JSON: {{"next_action": "DONE" or "ASK", "question": "..." if ASK
         """Update criteria based on user's answer (with or without LLM)."""
         api_key = os.getenv("OPENAI_API_KEY")
         
-        if not should_use_llm(api_key):
+        if not should_use_llm():
             # Simple rule-based update
             user_lower = user_response.lower()
             if "yes" in user_lower or "higher" in user_lower:

@@ -2,13 +2,26 @@ import os
 import json
 import re
 
-def should_use_llm(api_key: str) -> bool:
+def should_use_llm() -> bool:
+    """
+    Decide whether to use OpenAI LLM logic based on AI_SALES_AGENT_MODE.
+
+    Modes:
+        - auto: use LLM when OPENAI_API_KEY is set (default)
+        - real: require OPENAI_API_KEY and always use LLM
+        - fake: always use rule-based logic
+    """
     mode = os.getenv("AI_SALES_AGENT_MODE", "auto").lower()
+    if mode not in {"auto", "fake", "real"}:
+        raise ValueError(f"Unknown AI_SALES_AGENT_MODE '{mode}'. Use auto, fake, or real.")
+    api_key = os.getenv("OPENAI_API_KEY")
     if mode == "fake":
         return False
     if mode == "real":
         if not api_key:
-            raise RuntimeError("OPENAI_API_KEY is required when AI_SALES_AGENT_MODE=real")
+            raise RuntimeError(
+                "OPENAI_API_KEY environment variable is required when AI_SALES_AGENT_MODE is set to \"real\""
+            )
         return True
     return bool(api_key)
 
@@ -59,11 +72,10 @@ def parse_query_to_criteria_with_llm(query: str) -> dict:
     Falls back to rule-based parsing if API key is not available,
     unless AI_SALES_AGENT_MODE=real forces LLM usage.
     """
-    api_key = os.getenv("OPENAI_API_KEY")
-    
-    if not should_use_llm(api_key):
+    if not should_use_llm():
         # Fallback to rule-based parsing
         return parse_query_to_criteria_advanced(query)
+    api_key = os.getenv("OPENAI_API_KEY")
     
     try:
         import openai
