@@ -144,12 +144,11 @@ To deploy your own version:
 
 1. **Fork this repository**
 2. **Go to Settings** → **Pages**
-3. **Select Source**: Deploy from branch `main` (or your preferred branch)
-4. **Select Folder**: `/` (root)
-5. **Save** and wait a few minutes
-6. Your site will be live at `https://<your-username>.github.io/ai-sales-agent/`
+3. **Select Source**: GitHub Actions
+4. **Push to `main`** (or trigger the workflow manually)
+5. Your site will be live at `https://<your-username>.github.io/ai-sales-agent/`
 
-The `index.html` file in the root is ready to be served by GitHub Pages!
+The workflow in `.github/workflows/deploy-pages.yml` publishes the repository root, where `index.html` lives.
 
 ## API Endpoints
 
